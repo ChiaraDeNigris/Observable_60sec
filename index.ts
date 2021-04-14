@@ -14,15 +14,14 @@ const tick = interval(10000);
 const temp = new Observable(subscriber =>
   tick.subscribe({
     next(n) {
+      let somma=0;
       for (var city of cityElems) {
         fetch(URL + city.innerHTML)
           .then(response => response.json())
           .then(data => {
             var t = data.main.temp;
             somma += t;
-            var media = somma / cityElems.length;
-            subscriber.next(somma);
-            subscriber.complete();
+            subscriber.next(somma/ cityElems.length);
           });
       }
     }
@@ -32,9 +31,9 @@ const temp = new Observable(subscriber =>
 // Due subscriber
 var somma = 0;
 temp.subscribe({
-  next(x) {
-    var h = x/ cityElems.length ;
-    document.getElementById("output").innerHTML = h + "<br>";
+  next(x:number) {
+    console.log("media = " + x);
+    document.getElementById("output").innerHTML = x + "<br>";
   },
   complete() {
     console.log("done");
